@@ -8,5 +8,8 @@
     {{ article.title }}
     <br>
     {{ article.description }}
+
+    <a href="{% url 'update' article.id %}">Update</a>
+    <a href="{% url 'delete' article.id %}">Delete</a>
 </body>
 </html>
