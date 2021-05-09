@@ -3,6 +3,7 @@ from django.views.generic import ListView, CreateView, DetailView, UpdateView, D
 from django.urls import reverse
 from .models import Article
 from .forms import ArticleForm
+from account.models import Profile
 
 
 class IndexView(ListView):
@@ -23,6 +24,13 @@ class ArticleCreateView(CreateView):
     template_name = 'article_templates/create.html'
     context_object_name = 'article'
     form_class = ArticleForm
+
+    def form_valid(self, form):
+        article = form.save(commit=False)
+        profile = Profile.objects.get(user=self.request.user)
+        article.author = profile
+        article.save()
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse('detail', args=(self.object.id,))
