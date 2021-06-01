@@ -1,7 +1,12 @@
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls.static import static
+from django.conf import settings
 from article.views import IndexView, ArticleCreateView, ArticleDetailView, ArticleUpdateView, ArticleDeleteView
 from account.views import ProfileDetailView, SignUp
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.cache import never_cache
+from ckeditor_uploader import views as uploader_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -14,5 +19,7 @@ urlpatterns = [
     # Account/Profile
     path('account/profile/<int:profile_id>', ProfileDetailView.as_view(), name='profile'),
     path('account/', include('django.contrib.auth.urls')),
-    path('signup', SignUp.as_view(), name='signup')
- ]
+    path('signup', SignUp.as_view(), name='signup'),
+    path(r'^ckeditor/upload/', uploader_views.upload, name='ckeditor_upload'),
+    path(r'^ckeditor/browse/', never_cache(uploader_views.browse), name='ckeditor_browse'),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

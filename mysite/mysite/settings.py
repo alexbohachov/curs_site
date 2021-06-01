@@ -11,9 +11,10 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -37,6 +38,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'article.apps.ArticleConfig',
     'account.apps.AccountConfig',
+
+    'ckeditor',
+    'ckeditor_uploader',
     ]
 
 MIDDLEWARE = [
@@ -75,9 +79,9 @@ WSGI_APPLICATION = 'mysite.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-        }
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+}
 
 # Built-in Login & Logout urls
 
@@ -119,3 +123,31 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, '/static/')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static')
+    ]
+
+CKEDITOR_CONFIGS = {
+    'default': {
+    'toolbar': 'full',
+    'height': 300,
+    'width': 300,
+    },
+}
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR), 'media')
+
+CKEDITOR_UPLOAD_PATH = 'uploads/'
+
+# Email Settings
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_HOST_USER = 'postmaster@sandbox67d061de71414a6cae21aad5494a628a.mailgun.org'
+EMAIL_HOST_PASSWORD = 'ff772644b62051def46ab3243913004a-2b778fc3-39838d5d'
+DEFAULT_FROM_EMAIL = 'noreply@ali.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+SERVER_EMAIL = 'noreply@ali.com'

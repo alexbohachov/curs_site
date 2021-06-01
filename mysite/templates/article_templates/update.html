@@ -5,6 +5,10 @@
     <title>Update Page</title>
 </head>
 <body>
+    {% load static %}
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+    <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+
     <form action="{% url 'update' form.instance.id%}" method="post">
         {% csrf_token %}
         {{ form.as_p }}
